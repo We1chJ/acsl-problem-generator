@@ -25,6 +25,8 @@ class Problems:
 
 # Contest 1 Topic 1: Computer Number Systems
 class Computer_Number_Systems(Problems):
+    
+    NUMBER_OF_PROBLEM_TYPES = 1
 
     def __init__(self, contest_topic, problem_type):
         self.contest_topic = contest_topic
@@ -33,7 +35,7 @@ class Computer_Number_Systems(Problems):
 
     def generate_problem(self, problem_type):
         if problem_type == 0:
-            self.generate_problem(random.randint(1, 1))
+            self.generate_problem(random.randint(1, Computer_Number_Systems.NUMBER_OF_PROBLEM_TYPES))
         elif problem_type == 1:
             self.problem_statement, self.ans = self.T1_Conversion()
 
