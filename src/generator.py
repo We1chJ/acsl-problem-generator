@@ -7,7 +7,7 @@ the generator that takes in the requests info and calls functions to generate pr
 import random
 import problems
 
-NUMBER_OF_TOPICS = 1
+NUMBER_OF_TOPICS = 2
 
 def generate_1_problem(contest_topic, problem_type):
 
