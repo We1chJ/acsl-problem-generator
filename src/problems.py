@@ -167,12 +167,85 @@ class Prefix_Infix_PostFix_Notation(Problems):
         return prefix, postfix
 
     def evaluate_prefix(self, input):
-        print(input)
-        print(re.findall("[^\+\-\*\/\^123456789]", str(input)))
+        if len(re.findall("[^\+\-\*\/\^123456789]", str(input))) != 0 or len(re.findall("[123456789]", str(input))) != len(re.findall("[\+\-\*\/\^]", str(input))) + 1:
+            print('invalid input')
+            return None
 
-        pass
+        ops = []
+        nums = []
+
+        for s in input:
+            if s.isdigit():
+                nums.append(int(s))
+            else:
+                ops.append(s)
+            
+            while len(nums) >= 2:
+                if len(ops) == 0:
+                    return None
+                op = ops.pop()
+                num2 = nums.pop()
+                num1 = nums.pop()
+
+                res = None
+                if op == '+':
+                    res = num1 + num2
+                elif op == '-':
+                    res = num1 - num2
+                elif op == '*':
+                    res = num1 * num2
+                elif op == '/':
+                    res = num1 / num2
+                elif op == '^':
+                    res = num1 ** num2
+                
+                nums.append(res)
+
+        if len(ops) != 0 or len(nums) != 1:
+            return None
+
+        return nums[0]
+    
+    def evaluate_postfix(self, input):
+        if len(re.findall("[^\+\-\*\/\^123456789]", str(input))) != 0 or len(re.findall("[123456789]", str(input))) != len(re.findall("[\+\-\*\/\^]", str(input))) + 1:
+            print('invalid input')
+            return None
+
+        ops = []
+        nums = []
+
+        for s in input:
+            if s.isdigit():
+                nums.append(int(s))
+            else:
+                ops.append(s)
+            
+            while len(ops) >= 1:
+                if len(nums) < 2:
+                    return None
+                op = ops.pop()
+                num2 = nums.pop()
+                num1 = nums.pop()
+
+                res = None
+                if op == '+':
+                    res = num1 + num2
+                elif op == '-':
+                    res = num1 - num2
+                elif op == '*':
+                    res = num1 * num2
+                elif op == '/':
+                    res = num1 / num2
+                elif op == '^':
+                    res = num1 ** num2
+                
+                nums.append(res)
+
+        if len(ops) != 0 or len(nums) != 1:
+            return None
+
+        return nums[0]
         
-
     # problem type 1: Translate the given notation into the other notation. Only involving prefix and postfix
     def T1_Translation(self):
         prefix, postfix = self.generate_notations()
@@ -194,22 +267,38 @@ class Prefix_Infix_PostFix_Notation(Problems):
         prefix, postfix = self.generate_notations()
         r = random.random()
 
-        self.evaluate_prefix(''.join(str(x) for x in prefix))
-
         if r < 0.5:
-           # prefix
-           statement = "Evaluate the following Prefix Notation. Assume all numbers are single digits: \n" + ''.join(str(x) for x in prefix)
-           
-        
+            # prefix
+            statement = "Evaluate the following Prefix Notation. Assume all numbers are single digits: \n" + ''.join(str(x) for x in prefix)
+            ans = self.evaluate_prefix(''.join(str(x) for x in prefix))
 
-           return statement, ans
+            def check_ans(response):
+                # check if response string is a number including negative number cases
+                if not re.match(r'^-?\d+(\.\d+)?$', response):
+                    return False
+                # within certain decimal tolerance
+                return abs(ans - float(response)) < 1e-2
+
+            return statement, ans, check_ans
         else:
             # postfix
             statement = "Evaluate the following Postfix Notation. Assume all numbers are single digits: \n" + ''.join(str(x) for x in postfix)
-            ans = ''.join(str(x) for x in prefix)
-            return statement, ans
-        
+            ans = self.evaluate_postfix(''.join(str(x) for x in postfix))
 
-p = Prefix_Infix_PostFix_Notation(2, 2)
-prefix, postfix = p.generate_notations()
-p.evaluate_prefix(''.join(str(x) for x in prefix))
+            def check_ans(response):
+                # check if response string is a number including negative number cases
+                if not re.match(r'^-?\d+(\.\d+)?$', response):
+                    return False
+                # within certain decimal tolerance
+                return abs(ans - float(response)) < 1e-2
+
+            return statement, ans, check_ans
+        
+# =======================================
+if __name__ == "__main__":
+    p = Prefix_Infix_PostFix_Notation(2, 2)
+    prefix, postfix = p.generate_notations()
+
+    ans = p.evaluate_prefix(''.join(str(x) for x in "^-+*//+4762-2581"))
+    # ans = p.evaluate_postfix(''.join(str(x) for x in postfix))
+    print(ans)
