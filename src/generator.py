@@ -16,3 +16,6 @@ def generate_1_problem(contest_topic, problem_type):
 
     elif contest_topic == 1:
         return problems.Computer_Number_Systems(contest_topic, problem_type)
+    
+    elif contest_topic == 2:
+        return problems.Prefix_Infix_PostFix_Notation(contest_topic, problem_type)

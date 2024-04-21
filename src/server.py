@@ -9,7 +9,10 @@ Handles I/O, receives from the client, and sends out requests to generator, chec
 import generator
 
 contest_topic = int(input("Contest Topic: "))
-problem_type= int(input("Problem Type ID: "))
+if contest_topic == 0:
+    problem_type = 0
+else:
+    problem_type = int(input("Problem Type ID: "))
 
 problem = generator.generate_1_problem(contest_topic, problem_type)
 problem.generate_problem(problem_type)
