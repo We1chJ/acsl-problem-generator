@@ -18,6 +18,7 @@ problem = generator.generate_1_problem(contest_topic, problem_type)
 problem.generate_problem(problem_type)
 print(problem.problem_statement)
 
-print(problem.ans)
+# Answer key for reference
+print("Answer key for reference: ", problem.ans)
 response = input("Your answer: ")
 print(problem.check_ans(response))
