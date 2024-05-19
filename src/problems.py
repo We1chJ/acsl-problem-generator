@@ -19,7 +19,7 @@ class Problems:
         pass
 
     def default_check_ans(self, response):
-        return self.ans == response
+        return self.ans.lower() == response.lower()
 
 # =======================================
 # Specific Problems
